@@ -65,6 +65,6 @@ const items = [book1, book2, movie1];
 const sorted = [...items].sort(MediaItem.compare);
 
 console.log(
-  "3.1 Відсортовано за роком:",
+  "3.1 Відсортовано за роком: ",
   sorted.map((i) => i.getInfo()),
 );
