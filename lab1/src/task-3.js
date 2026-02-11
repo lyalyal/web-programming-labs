@@ -3,7 +3,6 @@ class MediaItem {
   static #nextId = 1;
   //Поле для зберігання ID(унікального)
   #id;
-
   constructor(title, year) {
     //Присвоєння поточного лічильника та збільшення його для наступного предмета
     this.#id = MediaItem.#nextId++;
@@ -14,7 +13,6 @@ class MediaItem {
   get id() {
     return this.#id;
   }
-
   get age() {
     return new Date().getFullYear() - this.year;
   }

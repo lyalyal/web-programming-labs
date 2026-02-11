@@ -4,7 +4,6 @@ function delay(ms) {
     setTimeout(resolve, ms);
   });
 }
-
 // Функція із імітацією реально запиту на сервер із рандомним результатом
 function simulateFetch(url) {
   return new Promise((resolve, reject) => {
@@ -29,7 +28,6 @@ function simulateFetch(url) {
     }, randomDelay);
   });
 }
-
 // Функція для повторного завантаження сервера якщо є збій
 async function fetchWithRetry(url, attempts) {
   let lastError;
@@ -50,13 +48,11 @@ async function fetchWithRetry(url, attempts) {
   //Спроб вже немає то вивід останньої помилки
   throw lastError;
 }
-
 //Функція завантаження одночасно даних із масиву посилань
 async function fetchMultiple(urls) {
   const results = await Promise.allSettled(
     urls.map((url) => simulateFetch(url)),
   );
-
   const successful = [];
   const failed = [];
   //Розподілення результатів на два окремих масиви
@@ -70,16 +66,13 @@ async function fetchMultiple(urls) {
   });
   return { successful, failed };
 }
-
 //Функція якап буде демонструвати всі частини роботи
 async function main() {
   console.log("=== Завдання 4: async/await ===");
-
   //Вимірювання реального часу затримку для завдання 4.1
   console.time("4.1 delay");
   await delay(1000);
   console.timeEnd("4.1 delay");
-
   //Одиночний запит на успіх або помилку
   try {
     const result = await simulateFetch(
@@ -89,7 +82,6 @@ async function main() {
   } catch (error) {
     console.log("4.2 Очікувана помилка:", error.message);
   }
-
   //Запит із пятьма спробами при невдачах
   try {
     const result = await fetchWithRetry(
@@ -100,15 +92,12 @@ async function main() {
   } catch (error) {
     console.log("4.3 Всі спроби невдалі:", error.message);
   }
-
   // Паралельне завантаження також при протоколі
   const results = await fetchMultiple([
     "https://jsonplaceholder.typicode.com/posts",
     "http://invalid-url",
     "https://jsonplaceholder.typicode.com/users",
   ]);
-
   console.log("4.4 Результати:", results);
 }
-
 main();
