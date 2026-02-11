@@ -1,4 +1,4 @@
-//Іпорт файлі, класів та методів
+//Імпорт файлі, класів та методів
 import { LIBRARY_NAME, books } from "./data.js";
 import BookCollection from "./untils.js";
 import {
