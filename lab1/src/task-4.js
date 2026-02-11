@@ -15,7 +15,7 @@ function simulateFetch(url) {
         reject(new Error(`Invalid URL: ${url}`));
         return;
       }
-      //Імітація стабільності мережі
+      //Імітація стабільності мережі.
       const success = Math.random() < 0.7;
 
       if (success) {
