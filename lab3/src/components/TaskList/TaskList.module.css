@@ -1,0 +1,15 @@
+.list {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.list > * {
+  margin-bottom: 15px;
+}
+
+.empty {
+  text-align: center;
+  color: #777;
+  font-style: bold;
+  margin-top: 20px;
+}
