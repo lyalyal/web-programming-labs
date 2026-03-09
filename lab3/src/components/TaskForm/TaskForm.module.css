@@ -1,0 +1,29 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.error {
+  color: red;
+  font-size: 10px;
+}
+
+.submit {
+  padding: 10px;
+  border: none;
+  background: #686868;
+  color: rgb(242, 209, 209);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: #4d4e50;
+}
