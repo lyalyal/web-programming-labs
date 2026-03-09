@@ -1,0 +1,37 @@
+.card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  background: white;
+}
+
+.cardLow {
+  border-left: 10px solid rgb(1, 165, 1);
+}
+
+.cardMedium {
+  border-left: 12px solid rgb(245, 170, 30);
+}
+
+.cardHigh {
+  border-left: 15px solid rgb(247, 43, 43);
+}
+
+.title {
+  margin: 0 0 8px 0;
+}
+
+.meta {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
