@@ -8,7 +8,7 @@ import {
 
 export class CreateTaskDto {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Назва не може бути порожньою' })
   @MaxLength(100)
   title!: string;
 
@@ -17,6 +17,8 @@ export class CreateTaskDto {
   @MaxLength(500)
   description?: string;
 
-  @IsIn(['low', 'medium', 'high'])
+  @IsIn(['low', 'medium', 'high'], {
+    message: 'Пріоритет має бути: low, medium або high',
+  })
   priority!: 'low' | 'medium' | 'high';
 }

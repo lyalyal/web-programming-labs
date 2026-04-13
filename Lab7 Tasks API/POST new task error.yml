@@ -1,0 +1,22 @@
+info:
+  name: POST new task error
+  type: http
+  seq: 11
+
+http:
+  method: POST
+  url: http://localhost:3000/tasks
+  body:
+    type: json
+    data: |-
+      {
+        "title": "",
+        "priority": "wrong"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

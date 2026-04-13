@@ -48,7 +48,7 @@ export class TasksController {
   update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
     const updated = this.tasksService.update(id, dto);
     //Перевірка чи є в наявності задача
-    if (!updated) throw new NotFoundException(`Task ${id} not found`);
+    if (!updated) throw new NotFoundException(`Завдання #${id} не знайдено`);
 
     return updated;
   }
@@ -58,6 +58,6 @@ export class TasksController {
   @HttpCode(204)
   remove(@Param('id') id: string) {
     const removed = this.tasksService.remove(id);
-    if (!removed) throw new NotFoundException(`Task ${id} not found`);
+    if (!removed) throw new NotFoundException(`Завдання #${id} не знайдено`);
   }
 }
