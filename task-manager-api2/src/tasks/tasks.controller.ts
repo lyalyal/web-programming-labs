@@ -9,6 +9,7 @@ import {
   Query,
   NotFoundException,
   HttpCode,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { TasksService } from './tasks.service';
@@ -31,8 +32,8 @@ export class TasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const task = this.tasksService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const task = await this.tasksService.findOne(id);
 
     if (!task) throw new NotFoundException(`Task ${id} not found`);
 
@@ -45,8 +46,11 @@ export class TasksController {
   }
   //Часткове оновлення задачу через її номер
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const updated = this.tasksService.update(id, dto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateTaskDto,
+  ) {
+    const updated = await this.tasksService.update(id, dto);
     //Перевірка чи є в наявності задача
     if (!updated) throw new NotFoundException(`Завдання #${id} не знайдено`);
 
@@ -56,8 +60,8 @@ export class TasksController {
   @Delete(':id')
   //Статус 204 якщо все успішно видалилось
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    const removed = this.tasksService.remove(id);
+  async remove(@Param('id') id: number) {
+    const removed = await this.tasksService.remove(id);
     if (!removed) throw new NotFoundException(`Завдання #${id} не знайдено`);
   }
 }

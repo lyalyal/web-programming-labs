@@ -4,6 +4,8 @@ import {
   IsOptional,
   MaxLength,
   IsIn,
+  IsArray,
+  IsNumber,
 } from 'class-validator';
 
 export class CreateTaskDto {
@@ -21,4 +23,9 @@ export class CreateTaskDto {
     message: 'Пріоритет має бути: low, medium або high',
   })
   priority!: 'low' | 'medium' | 'high';
+
+  @IsOptional()
+  @IsArray()
+  @IsNumber({}, { each: true })
+  tagIds?: number[];
 }

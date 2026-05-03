@@ -1,74 +1,74 @@
 import { Injectable } from '@nestjs/common';
-import { Task } from './types/task.type';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, In } from 'typeorm';
+import { Task } from './task.entity';
+import { Tag } from '../tags/tag.entity';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Injectable()
 export class TasksService {
-  private tasks: Task[] = [
-    {
-      id: '1',
-      title: 'Закінчити лр',
-      description: 'написати звіт',
-      status: 'pending',
-      priority: 'high',
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      title: 'Практика',
-      description: 'почати робити практику',
-      status: 'in-progress',
-      priority: 'medium',
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: '3',
-      title: 'Оформити звіт',
-      description: 'Практика + звіт',
-      status: 'done',
-      priority: 'low',
-      createdAt: new Date().toISOString(),
-    },
-  ];
-  //Отримання списку задач
-  findAll(): Task[] {
-    return this.tasks;
+  constructor(
+    @InjectRepository(Task)
+    private readonly tasksRepository: Repository<Task>,
+
+    @InjectRepository(Tag)
+    private readonly tagsRepository: Repository<Tag>,
+  ) {}
+
+  findAll(): Promise<Task[]> {
+    return this.tasksRepository.find({
+      relations: { tags: true },
+    });
   }
-  //Пошук задач за статусом
-  findByStatus(status?: string): Task[] {
-    //Якщо сатусу немає - задаі повертаються
-    if (!status) return this.tasks;
-    return this.tasks.filter((t) => t.status === status);
+
+  findByStatus(status?: string): Promise<Task[]> {
+    if (!status) {
+      return this.findAll();
+    }
+
+    return this.tasksRepository.find({
+      where: { status: status as 'pending' | 'in-progress' | 'done' },
+      relations: { tags: true },
+    });
   }
-  //Пошук однієї задачі за її айди
-  findOne(id: string): Task | null {
-    //Повернення обєкту, не викидаючи HTTP
-    return this.tasks.find((t) => t.id === id) ?? null;
+
+  findOne(id: number): Promise<Task | null> {
+    return this.tasksRepository.findOne({
+      where: { id },
+      relations: { tags: true },
+    });
   }
-  //Створення нової задачі
-  create(data): Task {
-    const task: Task = {
-      id: Date.now().toString(),
+
+  async create(data: CreateTaskDto): Promise<Task> {
+    const task = this.tasksRepository.create({
       title: data.title,
-      description: data.description,
+      description: data.description ?? null,
       priority: data.priority,
       status: 'pending',
-      createdAt: new Date().toISOString(),
-    };
-    this.tasks.push(task);
-    return task;
+    });
+
+    if (data.tagIds?.length) {
+      task.tags = await this.tagsRepository.find({
+        where: { id: In(data.tagIds) },
+      });
+    }
+
+    return this.tasksRepository.save(task);
   }
-  //Оновлення задачі яка вже існує
-  update(id: string, data): Task | null {
-    const task = this.findOne(id);
+
+  async update(id: number, data: UpdateTaskDto): Promise<Task | null> {
+    const task = await this.findOne(id);
+
     if (!task) return null;
+
     Object.assign(task, data);
-    return task;
+
+    return this.tasksRepository.save(task);
   }
-  //Видалення задачі за айді
-  remove(id: string): boolean {
-    const index = this.tasks.findIndex((t) => t.id === id);
-    if (index === -1) return false;
-    this.tasks.splice(index, 1);
-    return true;
+
+  async remove(id: number): Promise<boolean> {
+    const result = await this.tasksRepository.delete(id);
+    return result.affected !== 0;
   }
 }
