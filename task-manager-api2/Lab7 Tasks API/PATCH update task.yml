@@ -1,0 +1,21 @@
+info:
+  name: PATCH update task
+  type: http
+  seq: 15
+
+http:
+  method: PATCH
+  url: http://localhost:3000/tasks/999
+  body:
+    type: json
+    data: |-
+      {
+       "status":"done"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
