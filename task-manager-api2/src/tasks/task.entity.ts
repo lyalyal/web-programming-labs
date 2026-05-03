@@ -3,7 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Tag } from '../tags/tag.entity';
 
 @Entity('tasks')
 export class Task {
@@ -24,4 +27,8 @@ export class Task {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+  @ManyToMany(() => Tag, (tag) => tag.tasks, { onDelete: 'CASCADE' })
+  @JoinTable()
+  tags!: Tag[];
 }
