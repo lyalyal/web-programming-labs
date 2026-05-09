@@ -1,0 +1,23 @@
+info:
+  name: POST wrong passport
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: http://localhost:3000/auth/login
+  body:
+    type: json
+    data: |+
+      {
+        "email": "user@example.com",
+        "password": "wrongpassword"
+      }
+
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
