@@ -9,15 +9,11 @@ const schema = z.object({
   email: z.string().email("Некоректний email"),
   password: z.string().min(8, "Пароль має містити мінімум 8 символів"),
 });
-
 type FormData = z.infer<typeof schema>;
-
 export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const [serverError, setServerError] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -25,13 +21,10 @@ export function LoginPage() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
   async function onSubmit(data: FormData) {
     try {
       setServerError("");
-
       await login(data.email, data.password);
-
       navigate("/profile");
     } catch {
       setServerError("Невірний email або пароль");

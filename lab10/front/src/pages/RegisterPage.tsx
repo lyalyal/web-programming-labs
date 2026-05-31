@@ -10,13 +10,11 @@ const schema = z.object({
   password: z.string().min(8, "Пароль має містити мінімум 8 символів"),
 });
 type FormData = z.infer<typeof schema>;
-
 export function RegisterPage() {
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [serverError, setServerError] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -24,7 +22,6 @@ export function RegisterPage() {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
-
   async function onSubmit(data: FormData) {
     try {
       setServerError("");
@@ -37,7 +34,6 @@ export function RegisterPage() {
       setServerError("Користувач з таким email вже існує");
     }
   }
-
   return (
     <div>
       <h1>Реєстрація</h1>
