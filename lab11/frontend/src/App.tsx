@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-
 type UploadedFile = {
   name: string;
   originalName: string;
@@ -9,11 +8,9 @@ type UploadedFile = {
   mimetype: string;
   url: string;
 };
-
 const API_URL = import.meta.env.VITE_API_URL;
 const MAX_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
 function App() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
@@ -21,16 +18,13 @@ function App() {
   const [uploadedFile, setUploadedFile] = useState<UploadedFile | null>(null);
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
     if (!file) {
       setPreviewUrl("");
       return;
     }
-
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
-
     return () => {
       URL.revokeObjectURL(objectUrl);
     };
@@ -40,17 +34,13 @@ function App() {
     if (!ALLOWED_TYPES.includes(selectedFile.type)) {
       return "Дозволено завантажувати лише JPEG, PNG або WEBP зображення.";
     }
-
     if (selectedFile.size > MAX_SIZE) {
       return "Розмір файлу не повинен перевищувати 5 МБ.";
     }
-
     return "";
   };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-
     setMessage("");
     setProgress(0);
     setUploadedFile(null);

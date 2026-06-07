@@ -14,14 +14,11 @@ export interface FileMetadata {
 @Injectable()
 export class FilesService {
   private files: FileMetadata[] = [];
-
   saveFile(file: Express.Multer.File): FileMetadata {
     const extension = extname(file.originalname);
     const generatedName = `${uuidv4()}${extension}`;
     const uploadPath = join(process.cwd(), 'uploads', generatedName);
-
     writeFileSync(uploadPath, file.buffer);
-
     const metadata: FileMetadata = {
       name: generatedName,
       originalName: file.originalname,
@@ -29,25 +26,19 @@ export class FilesService {
       mimetype: file.mimetype,
       url: `http://localhost:3000/files/${generatedName}`,
     };
-
     this.files.push(metadata);
     return metadata;
   }
-
   getAllFiles(): FileMetadata[] {
     return this.files;
   }
-
   getFilePath(name: string): string {
     const filePath = join(process.cwd(), 'uploads', name);
-
     if (!existsSync(filePath)) {
       throw new NotFoundException('Файл не знайдено');
     }
-
     return filePath;
   }
-
   getFileMetadata(name: string): FileMetadata | undefined {
     return this.files.find((file) => file.name === name);
   }
